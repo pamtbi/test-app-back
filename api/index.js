@@ -1,4 +1,5 @@
 import app from '../app.js';
+import serverless from 'serverless-http';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import { createAdmin } from '../controllers/authController.js';
@@ -26,13 +27,14 @@ export default async function handler(req, res) {
   try {
     await mongoose.connect(process.env.MONGO_URI);
     console.log("MongoDB connected");
-    
+
     await createAdmin();
     console.log("createAdmin passed");
-    
-    res.status(200).json({ message: 'Server ready on Vercel' });
+
+    const response = await serverless(app)(req, res);
+    return response;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 }
