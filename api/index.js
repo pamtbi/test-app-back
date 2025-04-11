@@ -7,12 +7,15 @@ dotenv.config();
 
 let connected = false;
 
-export default async function handler(req, res) {
-  if (!connected) {
-    await mongoose.connect(process.env.MONGO_URI);
-    await createAdmin();
+async function App() {
+  await mongoose.connect(process.env.MONGO_URI);
+  await createAdmin();
+  app.listen(3000, () => {
+    console.log("Server ready on port 3000.");
     connected = true;
-  }
-
-  app(req, res);
+  });
 }
+
+App();
+
+export default app;
