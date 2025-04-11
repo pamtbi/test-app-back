@@ -1,7 +1,7 @@
-import app from './app.js';
+import app from '../app.js';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import { createAdmin } from './controllers/authController.js';
+import { createAdmin } from '../controllers/authController.js';
 
 dotenv.config();
 
