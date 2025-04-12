@@ -1,7 +1,8 @@
-import app from '../app.js';
+import app from './app.js';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import { createAdmin } from '../controllers/authController.js';
+import { createAdmin } from './controllers/authController.js';
+const PORT = process.env.PORT || 3000;
 dotenv.config();
 
 async function App() {
@@ -10,9 +11,7 @@ async function App() {
     console.log("MongoDB connected");
     await createAdmin();
     console.log("createAdmin passed");
-    app.listen(3000, () => {
-      console.log("Server ready on port 3000.");
-    });
+    app.listen(PORT, () => console.log(`Server ready on port ${PORT}.`));
   } catch (error) {
     console.log(error);
   }
