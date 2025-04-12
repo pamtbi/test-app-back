@@ -53,7 +53,7 @@ export const login = async (req, res) => {
 export const authTelegram = async (req, res) => {
   const { initData } = req.body;
 
-  if (!initData || !isValidInitData(initData, BOT_TOKEN)) {
+  if (!initData || !isValidInitData(initData, process.env.BOT_TOKEN)) {
     return res.status(403).json({ message: 'Невідомий ініціалізаційний код' });
   }
 
