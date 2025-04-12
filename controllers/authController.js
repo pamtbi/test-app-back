@@ -1,7 +1,8 @@
 import User from '../models/User.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import {isValidInitData} from '../utils/isValidInitData.js';
+import { isValidInitData } from '../utils/isValidInitData.js';
+import { JWT_SECRET, BOT_TOKEN } from '../env.js';
 
 export const register = async (req, res) => {
   try {
@@ -21,7 +22,7 @@ export const register = async (req, res) => {
     const hash = await bcrypt.hash(password, 10);
     const user = new User({ username, password: hash });
     await user.save();
-    const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET);
+    const token = jwt.sign({ id: user._id, role: user.role }, JWT_SECRET);
 
     res.status(201).json({ message: 'User created successfully', token });
   } catch (error) {
@@ -41,23 +42,22 @@ export const login = async (req, res) => {
   
     if (!isMatch) return res.status(401).json({ message: 'Wrong password' });
   
-    const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET);
+    const token = jwt.sign({ id: user._id, role: user.role }, JWT_SECRET);
     res.json({ token });
   } catch (error) {
     console.error('Login error:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
-  
 };
 
 export const authTelegram = async (req, res) => {
   const { initData } = req.body;
 
-  if(!process.env.BOT_TOKEN) {
+  if(!BOT_TOKEN) {
     return res.status(403).json({ message: 'Невідомий токен бота' });
   }
 
-  if (!initData || !isValidInitData(initData, process.env.BOT_TOKEN)) {
+  if (!initData || !isValidInitData(initData, BOT_TOKEN)) {
     return res.status(403).json({ message: 'Невідомий ініціалізаційний код' });
   }
 
@@ -76,7 +76,7 @@ export const authTelegram = async (req, res) => {
     await dbUser.save();
   }
 
-  const token = jwt.sign({ id: dbUser._id, telegramName: dbUser.telegramName }, process.env.JWT_SECRET, { expiresIn: '1h' });
+  const token = jwt.sign({ id: dbUser._id, telegramName: dbUser.telegramName }, JWT_SECRET, { expiresIn: '1h' });
 
   return res.json({
     message: 'Успішна авторизація',

@@ -1,5 +1,6 @@
 import User from "../models/User.js";
 import jwt from "jsonwebtoken";
+import { JWT_SECRET } from "../env.js";
 
 export const getUser = async (req, res) => {
   try {
@@ -9,7 +10,7 @@ export const getUser = async (req, res) => {
       return res.status(401).json({ message: "Unauthorized" });
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, JWT_SECRET);
     const user = await User.findById(decoded.id);
 
     if (!user) {

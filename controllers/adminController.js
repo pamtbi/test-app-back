@@ -7,7 +7,8 @@ export const getUsers = async (req, res) => {
       username: user.username,
       role: user.role,
       id: user._id,
-      results: user.results
+      results: user.results,
+      telegramName: user.telegramName
     };
   });
   const usersFilter = usersMap.filter((user) => user.role !== 'admin');
