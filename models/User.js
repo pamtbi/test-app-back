@@ -4,7 +4,7 @@ const userSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
   password: { type: String },
   role: { type: String, default: 'user' },
-  telegramId: { type: Number },
+  telegramId: { type: Number, unique: false },
   telegramName: { type: String },
   results: [{
     score: Number,
