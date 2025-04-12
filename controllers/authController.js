@@ -72,11 +72,11 @@ export const authTelegram = async (req, res) => {
   let dbUser = await User.findOne({ telegramId: user.id });
 
   if (!dbUser) {
-    dbUser = new User({ telegramId: user.id, telegramName: user.username});
+    dbUser = new User({ telegramId: user.id, username: user.username});
     await dbUser.save();
   }
 
-  const token = jwt.sign({ id: dbUser._id, telegramName: dbUser.telegramName }, JWT_SECRET, { expiresIn: '1h' });
+  const token = jwt.sign({ id: dbUser._id, username: dbUser.username }, JWT_SECRET, { expiresIn: '1h' });
 
   return res.json({
     message: 'Успішна авторизація',
