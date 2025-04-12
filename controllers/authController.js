@@ -2,9 +2,7 @@ import User from '../models/User.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { isValidInitData } from '../utils/isValidInitData.js';
-import { JWT_SECRET } from '../env.js';
-
-const BOT_TOKEN = "7763996605:AAEIhmqOxQfc1idWJ_0yW0yyaSgsHvs-KWg";
+import { JWT_SECRET, BOT_TOKEN } from '../env.js';
 
 export const register = async (req, res) => {
   try {
