@@ -77,7 +77,6 @@ export const authTelegram = async (req, res) => {
   return res.json({
     message: 'Успішна авторизація',
     token,
-    user: dbUser,
   });
 };
 

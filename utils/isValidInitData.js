@@ -1,4 +1,4 @@
-
+import crypto from 'crypto';
 
 export const isValidInitData = (initData, botToken) => {
   const urlParams = new URLSearchParams(initData);
