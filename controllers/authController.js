@@ -1,6 +1,7 @@
 import User from '../models/User.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import {isValidInitData} from '../utils/isValidInitData.js';
 
 export const register = async (req, res) => {
   try {
@@ -47,6 +48,37 @@ export const login = async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
   
+};
+
+export const authTelegram = async (req, res) => {
+  const { initData } = req.body;
+
+  if (!initData || !isValidInitData(initData, BOT_TOKEN)) {
+    return res.status(403).json({ message: 'Невідомий ініціалізаційний код' });
+  }
+
+  const params = new URLSearchParams(initData);
+  const userJson = params.get('user');
+  const user = userJson ? JSON.parse(userJson) : null;
+
+  if (!user) {
+    return res.status(400).json({ message: 'Невідома інформація про користувача' });
+  }
+
+  let dbUser = await User.findOne({ telegramId: user.id });
+
+  if (!dbUser) {
+    dbUser = new User({ telegramId: user.id, telegramName: user.username});
+    await dbUser.save();
+  }
+
+  const token = jwt.sign({ id: dbUser._id, telegramName: dbUser.telegramName }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+  return res.json({
+    message: 'Успішна авторизація',
+    token,
+    user: dbUser,
+  });
 };
 
 export const createAdmin = async () => {

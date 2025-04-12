@@ -30,7 +30,6 @@ function sendIndex(str) {
   });
 }
 
-
 sendIndex('/');
 sendIndex('/quiz');
 sendIndex('/admin');

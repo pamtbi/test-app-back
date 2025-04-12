@@ -1,9 +1,11 @@
 import mongoose from 'mongoose';
 
 const userSchema = new mongoose.Schema({
-  username: String,
-  password: String,
+  username: { type: String, required: true },
+  password: { type: String },
   role: { type: String, default: 'user' },
+  telegramId: { type: Number, unique: true },
+  telegramName: { type: String },
   results: [{
     score: Number,
     answers: [{
@@ -17,4 +19,3 @@ const userSchema = new mongoose.Schema({
 
 const User = mongoose.model('User', userSchema);
 export default User;
-
