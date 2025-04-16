@@ -21,6 +21,7 @@ export const getUser = async (req, res) => {
       id: user._id,
       username: user.username,
       role: user.role,
+      telegramName: user.telegramName,
     });
 
   } catch (error) {
